@@ -15,7 +15,7 @@ def inventory_from(filename)
   end
   # reject all filenames containing temp and recycler
   downcased.reject do | line |
-    boring?(line)
+    boring?(line, ["temp","recycler"]) #changes for excercise 5.5
   end    
 end
 
@@ -24,6 +24,13 @@ end
 def boring?(line)
   contains?(line, 'temp' ) or contains?(line, 'recycler' )
 end
+
+def boring?(line,boring_words)
+  boring_words.any? do |a_boring_word|
+    contains?(line,a_boring_word)
+  end
+end
+
 
 # Excercise 5.3 move include to a method
   def contains?(line, string)
