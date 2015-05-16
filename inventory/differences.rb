@@ -1,5 +1,5 @@
-old_inventory = File.open('old-inventory.txt' ).readlines
-new_inventory = File.open('new-inventory.txt' ).readlines
+old_inventory = File.open(ARGV[0]).readlines
+new_inventory = File.open(ARGV[1]).readlines
 
 x = (new_inventory - old_inventory).length
 
