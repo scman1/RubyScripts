@@ -1,6 +1,8 @@
-unless ARGV.length == 2
-  puts "Usage: differences.rb old-inventory new-inventory"
-  exit
+def check_usage 
+  unless ARGV.length == 2
+    puts "Usage: differences.rb old-inventory new-inventory"
+    exit
+  end
 end
 
 def inventory_from(filename)
@@ -21,28 +23,35 @@ def boring?(line)
   line.split('/' ).include?('recycler' )
 end
 
-old_inventory = inventory_from(ARGV[0])
+def compare_inventory_files(old_file, new_file)
+  old_inventory = inventory_from(old_file)
 
 
-new_inventory = inventory_from(ARGV[1])
+  new_inventory = inventory_from(new_file)
 
-x = (new_inventory - old_inventory).length
-# Excercise: add number of added files
-puts "The following #{x} file(s) have been added:"
-puts new_inventory - old_inventory
+  x = (new_inventory - old_inventory).length
+  # Excercise: add number of added files
+  puts "The following #{x} file(s) have been added:"
+  puts new_inventory - old_inventory
 
-y = (old_inventory - new_inventory).length
+  y = (old_inventory - new_inventory).length
 
-puts ""
-# Excercise: add number of deleted files
-puts "The following #{y}  file(s) have been deleted:"
-puts old_inventory - new_inventory
+  puts ""
+  # Excercise: add number of deleted files
+  puts "The following #{y}  file(s) have been deleted:"
+  puts old_inventory - new_inventory
 
-x = new_inventory.length - x
+  x = new_inventory.length - x
 
-y = old_inventory.length - y 
+  y = old_inventory.length - y 
 
-puts ""
-# Excercise: add number of unchanged files
-puts "Unchanged files: #{x} "
-puts "Verification of unchanged files: #{y} "
+  puts ""
+  # Excercise: add number of unchanged files
+  puts "Unchanged files: #{x} "
+  puts "Verification of unchanged files: #{y} "
+end
+
+if $0 == __FILE__
+  check_usage
+  compare_inventory_files(ARGV[0], ARGV[1])
+end	
