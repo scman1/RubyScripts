@@ -19,7 +19,7 @@ def subsystem_line(subsystem_name, change_count)
   asterisks = asterisks_for(change_count)
 #  subsystem_name.rjust(14) + ' ' + asterisks +
 #   ' (' + change_count.inspect + ')'
-  "#{subsystem_name.rjust(14)} #{asterisks} (#{change_count})"
+  "#{subsystem_name.rjust(14)} (#{change_count}) #{asterisks}"
 end
 
 #4 Method that returns the chain of asterisks given a number
@@ -36,16 +36,16 @@ end
 
 #6 Get log info from git
 def git_log(directory)
-  `git log --oneline --since="28 days ago" --stat -- #{directory}`
+  `git log --since="28 days ago" --stat --oneline -- --relative= ../#{directory}`
 end
 
 #Extract Change Count from git log
-def extract_change_count_from_git_log(log_text)
+def git_change_count_for(log_text)
   lines = log_text.split("\n" )
   change_lines=lines.find_all do | line |
     line.include?('changed')
   end
-  change_lines.length - 1
+  change_lines.length
 end
 
 def extract_change_count_from_svn_log(log_text)
@@ -57,14 +57,20 @@ def extract_change_count_from_svn_log(log_text)
 end
 
 if $0 == __FILE__    #(1)
-  subsystem_names = ['audit', 'fulfillment', 'persistence',    #(2)
-                     'ui', 'util', 'inventory']
-  start_date = month_before(Time.now)       #(3)
+  #~ subsystem_names = ['audit', 'fulfillment', 'persistence',    #(2)
+                     #~ 'ui', 'util', 'inventory']
+  #~ start_date = month_before(Time.now)       #(3)
 
 
 
-  puts header(start_date)                   #(4)
-  subsystem_names.each do | name |
-    puts subsystem_line(name, change_count_for(name)) #(5)  
+  #~ puts header(start_date)                   #(4)
+  #~ subsystem_names.each do | name |
+    #~ puts subsystem_line(name, change_count_for(name)) #(5)  
+  #~ end
+  directory_names = ["churn", "inventory","affinity-trip"]
+  start_date = month_before(Time.now)
+  puts header(start_date)  
+  directory_names.each do | name |
+    puts subsystem_line(name, git_change_count_for(git_log(name)))
   end
 end
