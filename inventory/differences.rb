@@ -22,10 +22,14 @@ end
 # Check if line can be ignored
 # Excercise 5.2 change chomp to boring
 def boring?(line)
-  line.chomp.split('/' ).include?('temp' ) or
-  line.chomp.split('/' ).include?('recycler' )
+  contains?(line, 'temp' ) or contains?(line, 'recycler' )
 end
 
+# Excercise 5.3 move include to a method
+  def contains?(line, string)
+     line.chomp.split('/' ).include?(string)
+  end
+  
 # create method for comparing directories
 def compare_inventory_files(old_file, new_file)
   old_inventory = inventory_from(old_file)
