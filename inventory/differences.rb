@@ -3,13 +3,16 @@ unless ARGV.length == 2
   exit
 end
 
-old_inventory = File.open(ARGV[0]).collect do | line |
-  line.downcase
+def inventory_from(filename)
+  File.open(filename).collect do | line |
+    line.downcase
+  end
 end
 
-new_inventory = File.open(ARGV[1]).collect do | line |
-  line.downcase
-end
+old_inventory = inventory_from(ARGV[0])
+
+
+new_inventory = inventory_from(ARGV[1])
 
 x = (new_inventory - old_inventory).length
 
