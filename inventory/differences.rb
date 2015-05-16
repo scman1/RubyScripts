@@ -1,3 +1,4 @@
+# create usage method
 def check_usage 
   unless ARGV.length == 2
     puts "Usage: differences.rb old-inventory new-inventory"
@@ -10,7 +11,7 @@ def inventory_from(filename)
   inventory=File.open(filename)
   # convert to lowercase and delete trailing \n
   downcased=inventory.collect do | line |
-    line.chomp.downcase
+    line.downcase
   end
   # reject all filenames containing temp and recycler
   downcased.reject do | line |
@@ -18,11 +19,14 @@ def inventory_from(filename)
   end    
 end
 
+# Check if line can be ignored
+# Excercise 5.2 change chomp to boring
 def boring?(line)
-  line.split('/' ).include?('temp' ) or
-  line.split('/' ).include?('recycler' )
+  line.chomp.split('/' ).include?('temp' ) or
+  line.chomp.split('/' ).include?('recycler' )
 end
 
+# create method for comparing directories
 def compare_inventory_files(old_file, new_file)
   old_inventory = inventory_from(old_file)
 
@@ -50,6 +54,9 @@ def compare_inventory_files(old_file, new_file)
   puts "Unchanged files: #{x} "
   puts "Verification of unchanged files: #{y} "
 end
+
+# Check if the script is being run from the command or irb
+# if command line try to run script else do nothing
 
 if $0 == __FILE__
   check_usage
