@@ -23,8 +23,8 @@ class ChurnTests < Test::Unit::TestCase
 
   # Direct test including only the method being tested
   def test_month_before_is_28_days_direct
-    assert_equal("Changes since 2015-04-15:" ,
-    header(svn_date(Time.local(2015, 4, 15))))
+    assert_equal("Changes between 2015-03-17 and 2015-04-15:" ,
+    header("2015-03-17", "2015-04-15"))
   end
   
   def test_asterisks_for_divides_by_five
@@ -49,8 +49,9 @@ class ChurnTests < Test::Unit::TestCase
   end
 
   def test_header_format
-    assert_equal("Changes since 2015-04-15:" ,
-    header(svn_date(Time.local(2015, 4, 15))))
+    assert_equal("Changes between 2015-03-17 and 2015-04-15:" ,
+    header(svn_date(month_before(Time.local(2015, 4, 15))),
+                svn_date(Time.local(2015, 4, 15))))
   end
   
   # Tests added to use git instead of subversion
