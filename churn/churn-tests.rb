@@ -11,7 +11,7 @@ class ChurnTests < Test::Unit::TestCase
 
   # test formatting of subsystem lines
   def test_normal_subsystem_line_format
-    assert_equal('audit         (45 changes)  *********' ,
+    assert_equal('audit             (45 changes)  *********' ,
                          subsystem_line("audit" , 45))
   end
 

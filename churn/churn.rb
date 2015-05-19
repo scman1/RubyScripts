@@ -20,9 +20,9 @@ def subsystem_line(subsystem_name, change_count)
 #  subsystem_name.rjust(14) + ' ' + asterisks +
 #   ' (' + change_count.inspect + ')'
   if change_count>0 
-    "#{subsystem_name.ljust(14)}#{("("+change_count.to_s+" changes)").ljust(14)}#{asterisks}"
+    "#{subsystem_name.ljust(18)}#{("("+change_count.to_s+" changes)").ljust(14)}#{asterisks}"
   else
-    "#{subsystem_name.ljust(14)}#{"-".ljust(14)}#{asterisks}"
+    "#{subsystem_name.ljust(18)}#{"-".ljust(14)}#{asterisks}"
   end	  
 end
 
@@ -79,7 +79,10 @@ if $0 == __FILE__    #(1)
   #~ subsystem_names.each do | name |
     #~ puts subsystem_line(name, change_count_for(name)) #(5)  
   #~ end
-  directory_names = ["churn", "inventory","affinity-trip"]
+  directory_names = ["affinity-trip",   "exercise-solutions", "user-choices",
+"arglist-facts",  "if-facts", "watchdog",  "churn", "inheritance",  "s4t-affinity-trip",
+"clash-check",     "inventory", "s4t-utils", "class-facts", "module-facts", 
+"scraping-alternatives"]
   start_date = svn_date(month_before(Time.now))
   end_date=svn_date(Time.now)
   puts header(start_date,end_date)  
