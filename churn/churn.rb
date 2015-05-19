@@ -10,8 +10,8 @@ def month_before(a_time)
 end
 
 # 2 Method that prints the header
-def header(a_time) 
-  a_time.strftime("Changes since %Y-%m-%d:" )
+def header(a_date) 
+  "Changes since #{a_date}:"
 end
 
 # 3 Method that prints the subsystem lines
@@ -39,13 +39,21 @@ def git_log(directory)
   `git log --since="28 days ago" --stat --oneline -- --relative= ../#{directory}`
 end
 
+def git_change_count_for(directory)
+  extract_change_count_from_git_log(git_log(directory))
+end
+
 #Extract Change Count from git log
-def git_change_count_for(log_text)
+def extract_change_count_from_git_log(log_text)
   lines = log_text.split("\n" )
   change_lines=lines.find_all do | line |
     line.include?('changed')
   end
   change_lines.length
+end
+
+def change_count_for(name, start_date)
+  extract_change_count_from(svn_log(name, start_date))
 end
 
 def extract_change_count_from_svn_log(log_text)
@@ -56,6 +64,9 @@ def extract_change_count_from_svn_log(log_text)
   dashed_lines.length - 1
 end
 
+def svn_date(a_time)
+  a_time.strftime("%Y-%m-%d")
+end
 if $0 == __FILE__    #(1)
   #~ subsystem_names = ['audit', 'fulfillment', 'persistence',    #(2)
                      #~ 'ui', 'util', 'inventory']
@@ -68,9 +79,9 @@ if $0 == __FILE__    #(1)
     #~ puts subsystem_line(name, change_count_for(name)) #(5)  
   #~ end
   directory_names = ["churn", "inventory","affinity-trip"]
-  start_date = month_before(Time.now)
+  start_date = svn_date(Time.now)
   puts header(start_date)  
   directory_names.each do | name |
-    puts subsystem_line(name, git_change_count_for(git_log(name)))
+    puts subsystem_line(name, git_change_count_for(name))
   end
 end

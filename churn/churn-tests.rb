@@ -18,13 +18,13 @@ class ChurnTests < Test::Unit::TestCase
   # Bootstraped test including more than one method in the test
   def test_month_before_is_28_days_bootstraped
     assert_equal(Time.local(2015, 1, 1),
-                 month_before(Time.local(2015, 1, 29)))
+                month_before(Time.local(2015, 1, 29)))
   end
 
   # Direct test including only the method being tested
   def test_month_before_is_28_days_direct
     assert_equal("Changes since 2015-04-15:" ,
-    header(Time.local(2015, 4, 15)))
+    header(svn_date(Time.local(2015, 4, 15))))
   end
   
   def test_asterisks_for_divides_by_five
@@ -50,20 +50,24 @@ class ChurnTests < Test::Unit::TestCase
 
   def test_header_format
     assert_equal("Changes since 2015-04-15:" ,
-    header(month_before(Time.local(2015, 5, 13))))
+    header(svn_date(Time.local(2015, 4, 15))))
   end
   
   # Tests added to use git instead of subversion
   def test_git_log_can_have_no_changes
-    assert_equal(0, git_change_count_for(""))
+    assert_equal(0,  extract_change_count_from_git_log(""))
   end
   
   def test_git_log_with_changes
-    assert_equal(2, git_change_count_for("ad2196d Chapter 7 Churn \
+    assert_equal(2,  extract_change_count_from_git_log("ad2196d Chapter 7 Churn \
     using git instead of SVN working version\n churn/churn.rb | 26 ++++++\
     ++++++++++----------\n 1 file changed, 16 insertions(+), 10 deletions\
     (-)\n85ebfaa Chapter 7 Churn work with git instead of SVN\n churn/chu\
     rn.rb | 70 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\
     \n 1 file changed, 70 insertions(+)\n"))
+  end
+  
+  def test_svn_date
+    assert_equal('2015-05-18', svn_date(Time.local(2015,5,18)))
   end
 end
