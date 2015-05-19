@@ -24,7 +24,7 @@ end
 
 #4 Method that returns the chain of asterisks given a number
 def asterisks_for(an_integer)
-  '*' * (an_integer / 5.0).round
+  an_integer > 2 ? '*' * (an_integer / 5.0).round : '-'
 end
 
 #5 Get log info from SVN

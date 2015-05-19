@@ -33,6 +33,12 @@ class ChurnTests < Test::Unit::TestCase
     assert_equal('***' , asterisks_for(17))
   end
   
+  def test_asterisks_for_few
+    assert_equal('-', asterisks_for(0))
+    assert_equal('-', asterisks_for(2))
+    assert_equal('*', asterisks_for(3))
+  end
+  
   def test_subversion_log_can_have_no_changes
     assert_equal(0, extract_change_count_from_svn_log("-------------------------\
       -----------------------------\n"))
