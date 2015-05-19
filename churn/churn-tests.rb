@@ -11,7 +11,7 @@ class ChurnTests < Test::Unit::TestCase
 
   # test formatting of subsystem lines
   def test_normal_subsystem_line_format
-    assert_equal('audit             (45 changes)  *********' ,
+    assert_equal('audit                   (45 changes)  *********' ,
                          subsystem_line("audit" , 45))
   end
 
@@ -77,4 +77,10 @@ class ChurnTests < Test::Unit::TestCase
   def test_svn_date
     assert_equal('2015-05-18', svn_date(Time.local(2015,5,18)))
   end
+  
+  def test_churn_line_to_int_extracts_parenthesized_change_count
+    assert_equal(45, churn_line_to_int("audit             (45 changes)  *********" ))
+    assert_equal(2,   churn_line_to_int("audit2            (2 changes)   *********" ))
+  end
 end
+

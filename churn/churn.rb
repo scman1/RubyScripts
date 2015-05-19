@@ -20,9 +20,9 @@ def subsystem_line(subsystem_name, change_count)
 #  subsystem_name.rjust(14) + ' ' + asterisks +
 #   ' (' + change_count.inspect + ')'
   if change_count>0 
-    "#{subsystem_name.ljust(18)}#{("("+change_count.to_s+" changes)").ljust(14)}#{asterisks}"
+    "#{subsystem_name.ljust(24)}#{("("+change_count.to_s+" changes)").ljust(14)}#{asterisks}"
   else
-    "#{subsystem_name.ljust(18)}#{"-".ljust(14)}#{asterisks}"
+    "#{subsystem_name.ljust(24)}#{"-".ljust(14)}#{asterisks}"
   end	  
 end
 
@@ -67,10 +67,29 @@ def extract_change_count_from_svn_log(log_text)
   end
   dashed_lines.length - 1
 end
-
+# 8 fix blunder 1
 def svn_date(a_time)
   a_time.strftime("%Y-%m-%d")
 end
+
+# 9 fix blunder 2
+
+# 9.1 use regular expression to extract change number
+def churn_line_to_int(line)
+  #/\((\d+)\)/.match(line)[1].to_i
+   match=/\((\d+) /.match(line)
+   match==nil ? 0 : match[1].to_i
+end
+
+# 9.2 use spaceship operator to order based on change number
+def order_by_descending_change_count(lines)
+  lines.sort do | one, another |
+    one_count = churn_line_to_int(one)
+    another_count = churn_line_to_int(another)
+    - (one_count <=> another_count)
+  end
+end
+
 if $0 == __FILE__    #(1)
   #~ subsystem_names = ['audit', 'fulfillment', 'persistence',    #(2)
                      #~ 'ui', 'util', 'inventory']
@@ -86,7 +105,8 @@ if $0 == __FILE__    #(1)
   start_date = svn_date(month_before(Time.now))
   end_date=svn_date(Time.now)
   puts header(start_date,end_date)  
-  directory_names.each do | name |
-    puts subsystem_line(name, git_change_count_for(name))
+  lines = directory_names.collect do | name |
+    subsystem_line(name, git_change_count_for(name))
   end
+  puts order_by_descending_change_count(lines)
 end
