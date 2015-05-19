@@ -19,7 +19,7 @@ def subsystem_line(subsystem_name, change_count)
   asterisks = asterisks_for(change_count)
 #  subsystem_name.rjust(14) + ' ' + asterisks +
 #   ' (' + change_count.inspect + ')'
-  "#{subsystem_name.rjust(14)} #{asterisks} (#{change_count})"
+  "#{subsystem_name.ljust(14)}#{("("+change_count.to_s+" changes)").ljust(14)}#{asterisks}"
 end
 
 #4 Method that returns the chain of asterisks given a number
