@@ -46,10 +46,24 @@ class ChurnTests < Test::Unit::TestCase
       -\nr2524 | bem | 2005-06-30 18:45:59 -0500 (Thu, 30 Jun 2005) | 1 line\n\
       \nresults of read-through; including renaming mistyping to snapshots\n--\
       -------------------------------------------\n"))
-end
+  end
 
   def test_header_format
     assert_equal("Changes since 2015-04-15:" ,
     header(month_before(Time.local(2015, 5, 13))))
+  end
+  
+  # Tests added to use git instead of subversion
+  def test_git_log_can_have_no_changes
+    assert_equal(0, git_change_count_for(""))
+  end
+  
+  def test_git_log_with_changes
+    assert_equal(2, git_change_count_for("ad2196d Chapter 7 Churn \
+    using git instead of SVN working version\n churn/churn.rb | 26 ++++++\
+    ++++++++++----------\n 1 file changed, 16 insertions(+), 10 deletions\
+    (-)\n85ebfaa Chapter 7 Churn work with git instead of SVN\n churn/chu\
+    rn.rb | 70 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\
+    \n 1 file changed, 70 insertions(+)\n"))
   end
 end
